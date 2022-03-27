@@ -34,7 +34,7 @@ public class Parser {
                 if(columnList.size() == 6)
                     transaction.setTerm_id(columnList.get(5));
                 else
-                    transaction.setTerm_id("NULL");
+                    transaction.setTerm_id(null);
                 transactions.add(transaction);
             }
             counter++;

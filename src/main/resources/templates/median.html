@@ -11,12 +11,12 @@
     <h1>Нахождение медианного значения по сумме транзакций</h1>
     <div class="alert alert-info mt-2">
         <p th:text="'Вычисленное значение медианы по сумме транзакций по всем транзакциям в базе данных: ' + ${median}"></p>
-    </div>
-    <div>
-        <form action="#" th:action="@{/median}" method="post" enctype="multipart/form-data">
-            <button type="submit" name="action" th:value="confirm" class="btn btn-success">Вычислить</button>
-            <button type="submit" name="action" th:value="cancel" class="btn btn-danger">Вернуться</button>
-        </form>
+        <div>
+            <form action="#" th:action="@{/median}" method="post" enctype="multipart/form-data">
+                <button type="submit" name="action" th:value="confirm" class="btn btn-success">Вычислить</button>
+                <button type="submit" name="action" th:value="cancel" class="btn btn-danger">Вернуться</button>
+            </form>
+        </div>
     </div>
 </div>
 </body>

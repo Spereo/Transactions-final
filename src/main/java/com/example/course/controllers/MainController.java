@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class MainController {
             return "median";
         }
         if(action.equals("searchNotEmpty")) {
-            return "home";
+            return "notEmpty";
         }
         if(action.equals("medianSpecial"))
         {
@@ -159,6 +158,53 @@ public class MainController {
             }
             model.addAttribute("median", median);
             return "median";
+        } else {
+            return "home";
+        }
+    }
+
+    @PostMapping("/notEmpty")
+    public String notEmpty(Model model, @RequestParam String action, @RequestParam String field, @RequestParam String searchedValue) {
+        if(action.equals("confirm")) {
+            Iterable<Transaction> transactions = transactionRepo.findAll();
+            List<Transaction> result = new ArrayList<>();
+
+            for(Transaction transaction : transactions) {
+                if(transaction.getTr_datetime() != null && transaction.getTerm_id() != null) {
+                    if(field.trim().equals("customer_id")) {
+                        if(transaction.getCustomer_id() == Integer.parseInt(searchedValue)) {
+                            result.add(transaction);
+                        }
+                    } else if(field.trim().equals("tr_datetime")) {
+                        if(transaction.getTr_datetime().equals(searchedValue)) {
+                            result.add(transaction);
+                        }
+                    } else if(field.trim().equals("mcc_code")) {
+                        if(transaction.getMcc_code() == Integer.parseInt(searchedValue)) {
+                            result.add(transaction);
+                        }
+                    } else if(field.trim().equals("tr_type")) {
+                        if(transaction.getTr_type() == Integer.parseInt(searchedValue)) {
+                            result.add(transaction);
+                        }
+                    } else if(field.trim().equals("amount")) {
+                        if (transaction.getTr_type() == Double.parseDouble(searchedValue)) {
+                            result.add(transaction);
+                        }
+                    } else if(field.trim().equals("term_id")) {
+                        if (transaction.getTerm_id().equals(searchedValue)) {
+                            result.add(transaction);
+                        }
+                    }
+                }
+            }
+            boolean exists = true;
+            if(result.isEmpty()) {
+                exists = false;
+            }
+            model.addAttribute("result", result);
+            model.addAttribute("exists", exists);
+            return "notEmpty";
         } else {
             return "home";
         }
