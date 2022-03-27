@@ -47,15 +47,6 @@ public class MainController {
         return "home";
     }
 
-    @GetMapping("/transactions")
-    public String transactions(Model model) throws IOException {
-        ArrayList<Transaction> transactions = Parser.ParseTransaction(uploadPath + "transactions_cut.csv");
-        Iterable<Transaction> transactions1 = transactionRepo.findAll();
-        model.addAttribute("transactions", transactions);
-        model.addAttribute("transactions1", transactions1);
-        return "transactions";
-    }
-
     @PostMapping("/check")
     public String check(Model model, @RequestParam String action) {
         if(action.equals("CSVtoDB")) {
@@ -80,7 +71,7 @@ public class MainController {
         }
         if(action.equals("medianSpecial"))
         {
-            return "transactions";
+            return "medianUnique";
         } else {
             return "home";
         }
@@ -205,6 +196,31 @@ public class MainController {
             model.addAttribute("result", result);
             model.addAttribute("exists", exists);
             return "notEmpty";
+        } else {
+            return "home";
+        }
+    }
+
+    @PostMapping("/medianUnique")
+    public String medianUnique(Model model, @RequestParam String action) {
+        if(action.equals("confirm")) {
+            Iterable<Transaction> transactions = transactionRepo.findAll();
+            List<Double> amounts = new ArrayList<>();
+            for(Transaction transaction : transactions) {
+                amounts.add(transaction.getAmount());
+            }
+            Collections.sort(amounts);
+            Collections.reverse(amounts);
+
+            int length = amounts.size();
+            Double median;
+            if(length % 2 != 0) {
+                median = amounts.get(length/2);
+            } else {
+                median = (amounts.get(length/2) + amounts.get(length/2 - 1))/2;
+            }
+            model.addAttribute("median", median);
+            return "median";
         } else {
             return "home";
         }

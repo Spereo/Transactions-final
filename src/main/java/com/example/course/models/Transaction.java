@@ -23,6 +23,15 @@ public class Transaction {
 
     private String term_id;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Gender_train gender_train;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Tr_mcc_codes tr_mcc_codes;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Tr_types tr_types;
+
     public Transaction setCustomer_id(int customer_id) { this.customer_id = customer_id; return this; }
     public Transaction setTr_datetime(String tr_datetime) { this.tr_datetime = tr_datetime; return this; }
     public Transaction setMcc_code(int mcc_code) { this.mcc_code = mcc_code; return this; }
@@ -37,12 +46,19 @@ public class Transaction {
     public double getAmount() { return amount; }
     public String getTerm_id() { return term_id; }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Gender_train gender_train;
+    public Transaction() {}
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Tr_mcc_codes tr_mcc_codes;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private Tr_types tr_types;
+    public Transaction(int customer_id,
+                       String tr_datetime,
+                       int mcc_code,
+                       int tr_type,
+                       double amount,
+                       String term_id) {
+        this.customer_id = customer_id;
+        this.tr_datetime = tr_datetime;
+        this.mcc_code = mcc_code;
+        this.tr_type = tr_type;
+        this.amount = amount;
+        this.term_id = term_id;
+    }
 }

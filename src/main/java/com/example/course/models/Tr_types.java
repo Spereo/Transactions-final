@@ -29,4 +29,11 @@ public class Tr_types {
     public void setTr_description(String tr_description) {
         this.tr_description = tr_description;
     }
+
+    public Tr_types() {}
+
+    public Tr_types(int tr_type, String tr_description) {
+        this.tr_type = tr_type;
+        this.tr_description = tr_description;
+    }
 }

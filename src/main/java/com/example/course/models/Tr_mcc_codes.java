@@ -29,4 +29,11 @@ public class Tr_mcc_codes {
     public void setMcc_description(String mcc_description) {
         this.mcc_description = mcc_description;
     }
+
+    public Tr_mcc_codes() {}
+
+    public Tr_mcc_codes(int mcc_code, String mcc_description) {
+        this.mcc_code = mcc_code;
+        this.mcc_description = mcc_description;
+    }
 }

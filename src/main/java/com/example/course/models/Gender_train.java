@@ -31,4 +31,11 @@ public class Gender_train {
         this.gender = gender;
         return this;
     }
+
+    public Gender_train() {}
+
+    public Gender_train(int customer_id, String gender) {
+        this.customer_id = customer_id;
+        this.gender = gender;
+    }
 }
