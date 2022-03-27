@@ -57,7 +57,7 @@ public class Parser {
             {
                 Gender_train gender_train = new Gender_train();
                 gender_train.setCustomer_id(Integer.parseInt(columnList.get(0)));
-                gender_train.setGender(Integer.parseInt(columnList.get(1)));
+                gender_train.setGender(columnList.get(1));
                 gender_trains.add(gender_train);
             }
             counter++;
@@ -71,7 +71,7 @@ public class Parser {
 
         int counter = 0;
         for(String fileLine : fileLines) {
-            String[] splitedText = fileLine.split(",");
+            String[] splitedText = fileLine.split(";");
             List<String> columnList = new ArrayList<>();
             for(int i = 0; i < splitedText.length; i++) {
                 columnList.add(splitedText[i]);
@@ -94,7 +94,7 @@ public class Parser {
 
         int counter = 0;
         for(String fileLine : fileLines) {
-            String[] splitedText = fileLine.split(",");
+            String[] splitedText = fileLine.split(";");
             List<String> columnList = new ArrayList<>();
             for(int i = 0; i < splitedText.length; i++) {
                 columnList.add(splitedText[i]);

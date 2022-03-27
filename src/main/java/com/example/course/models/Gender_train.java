@@ -12,21 +12,23 @@ public class Gender_train {
     private int id;
 
     private int customer_id;
-    private int gender;
+    private String gender;
 
     public int getCustomer_id() {
         return customer_id;
     }
 
-    public void setCustomer_id(int customer_id) {
+    public Gender_train setCustomer_id(int customer_id) {
         this.customer_id = customer_id;
+        return this;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public Gender_train setGender(String gender) {
         this.gender = gender;
+        return this;
     }
 }

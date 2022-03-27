@@ -1,6 +1,9 @@
 package com.example.course.controllers;
 
 import com.example.course.Parser;
+import com.example.course.models.Gender_train;
+import com.example.course.models.Tr_mcc_codes;
+import com.example.course.models.Tr_types;
 import com.example.course.models.Transaction;
 import com.example.course.repos.Gender_train_Repo;
 import com.example.course.repos.Tr_mcc_codes_Repo;
@@ -45,7 +48,7 @@ public class MainController {
 
     @GetMapping("/transactions")
     public String transactions(Model model) throws IOException {
-        ArrayList<Transaction> transactions = Parser.ParseTransaction("./DataCSV/transactions_cut.csv");
+        ArrayList<Transaction> transactions = Parser.ParseTransaction(uploadPath + "transactions_cut.csv");
         Iterable<Transaction> transactions1 = transactionRepo.findAll();
         model.addAttribute("transactions", transactions);
         model.addAttribute("transactions1", transactions1);
@@ -110,9 +113,29 @@ public class MainController {
                 }
             }
             model.addAttribute("isWritten", written);
-            return "CSVtoDB";
+        } else if(action.equals("confirm")) {
+            ArrayList<Gender_train> gender_trains = Parser.ParseGender_train(uploadPath + "gender_train_cut.csv");
+            for(Gender_train gender_train : gender_trains) {
+                gender_train_repo.save(gender_train);
+            }
+
+            ArrayList<Tr_mcc_codes> tr_mcc_codes = Parser.ParseTr_mcc_codes(uploadPath + "tr_mcc_codes.csv");
+            for(Tr_mcc_codes tr_mcc_code : tr_mcc_codes) {
+                tr_mcc_codes_repo.save(tr_mcc_code);
+            }
+
+            ArrayList<Tr_types> tr_types = Parser.ParseTr_types(uploadPath + "tr_mcc_codes.csv");
+            for(Tr_types tr_type : tr_types) {
+                tr_types_repo.save(tr_type);
+            }
+
+            ArrayList<Transaction> transactions = Parser.ParseTransaction(uploadPath + "transactions_cut.csv");
+            for(Transaction transaction : transactions) {
+                transactionRepo.save(transaction);
+            }
         } else {
             return "home";
         }
+        return "CSVtoDB";
     }
 }
