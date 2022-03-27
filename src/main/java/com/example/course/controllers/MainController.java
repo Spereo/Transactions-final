@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -72,7 +74,7 @@ public class MainController {
             return "CSVtoDB";
         }
         if(action.equals("median")) {
-            return "transactions";
+            return "median";
         }
         if(action.equals("searchNotEmpty")) {
             return "home";
@@ -137,5 +139,28 @@ public class MainController {
             return "home";
         }
         return "CSVtoDB";
+    }
+
+    @PostMapping("/median")
+    public String median(Model model, @RequestParam String action) {
+        if(action.equals("confirm")) {
+            Iterable<Transaction> transactions = transactionRepo.findAll();
+            List<Double> amounts = new ArrayList<>();
+            for(Transaction transaction : transactions) {
+                amounts.add(transaction.getAmount());
+            }
+            Collections.sort(amounts);
+            int length = amounts.size();
+            Double median;
+            if(length % 2 != 0) {
+                median = amounts.get(length/2);
+            } else {
+                median = (amounts.get(length/2) + amounts.get(length/2 - 1))/2;
+            }
+            model.addAttribute("median", median);
+            return "median";
+        } else {
+            return "home";
+        }
     }
 }
