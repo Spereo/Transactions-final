@@ -1,9 +1,6 @@
 package com.example.course.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Transaction {
@@ -11,11 +8,19 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @Column(insertable = false, updatable = false)
     private int customer_id;
+
     private String tr_datetime;
+
+    @Column(insertable = false, updatable = false)
     private int mcc_code;
+
+    @Column(insertable = false, updatable = false)
     private int tr_type;
+
     private double amount;
+
     private String term_id;
 
     public void setCustomer_id(int customer_id) { this.customer_id = customer_id; }
@@ -31,4 +36,16 @@ public class Transaction {
     public int getTr_type() { return tr_type; }
     public double getAmount() { return amount; }
     public String getTerm_id() { return term_id; }
+
+    @OneToOne
+    @JoinColumn(name = "customer_id")
+    private Gender_train gender_train;
+
+    @OneToOne
+    @JoinColumn(name = "mcc_code")
+    private Tr_mcc_codes tr_mcc_codes;
+
+    @OneToOne
+    @JoinColumn(name = "tr_type")
+    private Tr_types tr_types;
 }
