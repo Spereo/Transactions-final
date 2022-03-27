@@ -45,7 +45,7 @@ public class MainController {
 
     @GetMapping("/transactions")
     public String transactions(Model model) throws IOException {
-        ArrayList<Transaction> transactions = Parser.ParseTransactionCSV("./DataCSV/transactions_cut.csv");
+        ArrayList<Transaction> transactions = Parser.ParseTransaction("./DataCSV/transactions_cut.csv");
         Iterable<Transaction> transactions1 = transactionRepo.findAll();
         model.addAttribute("transactions", transactions);
         model.addAttribute("transactions1", transactions1);
