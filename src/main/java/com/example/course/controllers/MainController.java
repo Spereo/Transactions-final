@@ -9,6 +9,7 @@ import com.example.course.repos.Gender_train_Repo;
 import com.example.course.repos.Tr_mcc_codes_Repo;
 import com.example.course.repos.Tr_types_Repo;
 import com.example.course.repos.TransactionRepo;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -204,20 +205,34 @@ public class MainController {
     @PostMapping("/medianUnique")
     public String medianUnique(Model model, @RequestParam String action) {
         if(action.equals("confirm")) {
-            Iterable<Transaction> transactions = transactionRepo.findAll();
-            List<Double> amounts = new ArrayList<>();
-            for(Transaction transaction : transactions) {
-                amounts.add(transaction.getAmount());
-            }
-            Collections.sort(amounts);
-            Collections.reverse(amounts);
+            Iterable<Transaction> Itransactions = transactionRepo.findAll();
 
-            int length = amounts.size();
+            List<Transaction> transactions = Lists.newArrayList(Itransactions);
+            Collections.reverse(transactions);
+
+            int amountsNumber = transactions.size();
+
+            for(int i = 0; i < amountsNumber; i++) {
+                for(int j = i + 1; j < amountsNumber; j++) {
+                    if(transactions.get(i).getMcc_code() == transactions.get(j).getMcc_code()
+                    && transactions.get(i).getTr_type() == transactions.get(j).getTr_type()) {
+                        transactions.get(j).setAmount(0);
+                    }
+                }
+            }
+
+            for(int i = 0; i < transactions.size(); i++) {
+                if(transactions.get(i).getAmount() == 0) {
+                    transactions.remove(i);
+                }
+            }
+
+            amountsNumber = transactions.size();
             Double median;
-            if(length % 2 != 0) {
-                median = amounts.get(length/2);
+            if(amountsNumber % 2 != 0) {
+                median = transactions.get(amountsNumber/2).getAmount();
             } else {
-                median = (amounts.get(length/2) + amounts.get(length/2 - 1))/2;
+                median = (transactions.get(amountsNumber/2).getAmount() + transactions.get(amountsNumber/2 - 1).getAmount())/2;
             }
             model.addAttribute("median", median);
             return "median";
